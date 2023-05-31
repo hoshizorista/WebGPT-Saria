@@ -1,0 +1,10 @@
+Flask
+render_template
+request
+os
+openai
+tiktoken
+transformers
+googlesearch-python
+requests
+beautifulsoup4

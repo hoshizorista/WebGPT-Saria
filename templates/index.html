@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--AGAIN, Some of the things here are not even used, been experimenting-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/static/content/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/content/style.css">
+    <script src="/static/scripts/jquery-1.10.2.min.js"></script>
+    <link rel="icon" type="/static/content/img" href="/favicon.ico">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>SarIA</title>
+</head>
+<body>
+    <br />
+    <br />
+    <br />
+    <br />
+    <!--Main body-->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="messagebox" class="border border-success"></div>
+                <div id="loader-container" class="loader-container" style="display: none;">
+                    <div id="loader" class="loader"></div>
+                </div>
+    
+                <br>
+                <div class="col-sm-12">
+                    <div id="userInput" class="row">
+                        <div id="userInput" class="row">
+                            <div class="col-md-8"> 
+                                <input id="userMessage" class="form-control" type="text" name="msg" placeholder="Please write your question here.">
+                            </div>
+                            <div class="col-md-3"> 
+                                <input id="sendButton" class="btn btn-success form-control" type="submit" value="->">
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!--JS, mostly basic funtions and some additional things-->
+    <script>
+        function getCompletion() {
+          let userText = $("#userMessage").val();
+          let userHtml = '<p class="userText"><span>' + userText + '</span></p>';
+          $("#userMessage").val("");
+          $("#messagebox").append(userHtml);
+          document.getElementById('userInput').scrollIntoView({ block: 'start', behavior: 'smooth' });
+        
+          $("#loader-container").show();
+          $("#sendButton").prop("disabled", true);
+        
+          $.get("/get", { msg: userText }).done(function (data) {
+            // If has ´´´´ its taken as code
+            var codeRegex = /```(?:python|javascript)?\s([\s\S]*?)```/;
+            var codeMatch = data.match(codeRegex);
+            var isCode = codeMatch !== null;
+        
+            var responseText = isCode ? '<code>' + codeMatch[1] + '</code>' : '<span>' + data + '</span>';
+            var assistantHTML = '<p class="assistantText"><img src="https://tinypic.host/images/2023/05/31/sariaicon.png" alt="Assistant" class="assistantImage">' + responseText + '</p>';
+            $("#messagebox").append(assistantHTML);
+            document.getElementById('userInput').scrollIntoView({ block: 'start', behavior: 'smooth' });
+        
+            $("#loader-container").hide();
+            $("#sendButton").prop("disabled", false);
+          });
+        }
+        
+        $("#userMessage").keypress(function (e) {
+          if ($("#loader-container").is(":visible")) {
+            return; 
+          }
+        
+          if (e.which == 13) {
+            getCompletion();
+          }
+        });
+        
+        $("#sendButton").click(function () {
+          getCompletion();
+        });
+    </script>
+    <br>
+    <br>
+    <br>
+</div>
+</body>
+</html>
