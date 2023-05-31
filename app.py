@@ -9,8 +9,8 @@ import requests
 from bs4 import BeautifulSoup
 
 #Hardcoded, for now manually use os.getenv (which is already imported) to avoid exposure 
-openai.api_key = "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"
-api_key = "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"
+openai.api_key = ""
+api_key = ""
 
 system_message = {"role": "system", "content": "You are an AI assistant named SarIA, your goal is to assist the user with any request."}
 max_response_tokens = 500
