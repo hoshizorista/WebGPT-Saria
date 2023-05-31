@@ -23,4 +23,5 @@
   <li>Read PDFs from websites</li>
   <li>Identify images and search them on search engines</li>
   <li>To interact with the user's pc via Macros</li>
+  <li>Optimize code and responsiveness</li>
 </ul>
